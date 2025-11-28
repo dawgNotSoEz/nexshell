@@ -102,6 +102,65 @@ async function handleNetwork(args: string[], context: ExecutionContext): Promise
   };
 }
 
+/**
+ * nexus users - User information
+ */
+async function handleUsers(args: string[], context: ExecutionContext): Promise<CommandExecutionResult> {
+  const userInfo = os.userInfo();
+  const info = [
+    '=== User Information ===',
+    `Username: ${userInfo.username}`,
+    `UID: ${userInfo.uid ?? 'N/A'}`,
+    `GID: ${userInfo.gid ?? 'N/A'}`,
+    `Home: ${userInfo.homedir}`,
+    `Shell: ${userInfo.shell ?? 'N/A'}`
+  ];
+
+  return {
+    stdout: info.join('\n'),
+    stderr: '',
+    exitCode: 0
+  };
+}
+
+/**
+ * nexus env - Environment variables
+ */
+async function handleEnv(args: string[], context: ExecutionContext): Promise<CommandExecutionResult> {
+  const env = process.env;
+  const filter = args[0]?.toLowerCase();
+
+  let output: string[];
+  if (filter) {
+    // Filter environment variables
+    output = Object.entries(env)
+      .filter(([key]) => key.toLowerCase().includes(filter))
+      .map(([key, value]) => `${key}=${value}`)
+      .sort();
+  } else {
+    // Show all (limited to safe/common ones)
+    const safeKeys = ['PATH', 'HOME', 'USER', 'SHELL', 'TEMP', 'TMP', 'NODE_ENV', 'PWD'];
+    output = safeKeys
+      .filter(key => env[key])
+      .map(key => `${key}=${env[key]}`)
+      .sort();
+  }
+
+  if (output.length === 0) {
+    return {
+      stdout: '',
+      stderr: 'nexus env: No matching environment variables found',
+      exitCode: 1
+    };
+  }
+
+  return {
+    stdout: output.join('\n'),
+    stderr: '',
+    exitCode: 0
+  };
+}
+
 // Subcommand registry
 const NEXUS_SUBCOMMANDS: Record<string, NexusSubcommand> = {
   status: {
@@ -118,6 +177,16 @@ const NEXUS_SUBCOMMANDS: Record<string, NexusSubcommand> = {
     name: 'network',
     handler: handleNetwork,
     description: 'Show network interface information'
+  },
+  users: {
+    name: 'users',
+    handler: handleUsers,
+    description: 'Display user information'
+  },
+  env: {
+    name: 'env',
+    handler: handleEnv,
+    description: 'Show environment variables (optionally filtered)'
   }
 };
 
