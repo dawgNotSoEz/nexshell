@@ -278,7 +278,8 @@ export const handleNexus: CommandHandler = async (args, context) => {
       '='.repeat(50),
       ...subcommands.map(cmd => `  nexus ${cmd.name.padEnd(12)} ${cmd.description}`),
       '',
-      'Usage: nexus <subcommand> [args...]'
+      'Usage: nexus <subcommand> [args...]',
+      'Example: nexus status, nexus system, nexus network'
     ].join('\n');
 
     return {
