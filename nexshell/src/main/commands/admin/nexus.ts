@@ -76,6 +76,32 @@ async function handleSystem(args: string[], context: ExecutionContext): Promise<
   };
 }
 
+/**
+ * nexus network - Network interface information
+ */
+async function handleNetwork(args: string[], context: ExecutionContext): Promise<CommandExecutionResult> {
+  const interfaces = os.networkInterfaces();
+  const lines: string[] = ['=== Network Interfaces ==='];
+
+  for (const [name, addrs] of Object.entries(interfaces)) {
+    if (!addrs) continue;
+    lines.push(`\n${name}:`);
+    for (const addr of addrs) {
+      if (addr.family === 'IPv4') {
+        lines.push(`  IPv4: ${addr.address} (${addr.internal ? 'internal' : 'external'})`);
+      } else if (addr.family === 'IPv6') {
+        lines.push(`  IPv6: ${addr.address} (${addr.internal ? 'internal' : 'external'})`);
+      }
+    }
+  }
+
+  return {
+    stdout: lines.join('\n'),
+    stderr: '',
+    exitCode: 0
+  };
+}
+
 // Subcommand registry
 const NEXUS_SUBCOMMANDS: Record<string, NexusSubcommand> = {
   status: {
@@ -87,6 +113,11 @@ const NEXUS_SUBCOMMANDS: Record<string, NexusSubcommand> = {
     name: 'system',
     handler: handleSystem,
     description: 'Display detailed system information'
+  },
+  network: {
+    name: 'network',
+    handler: handleNetwork,
+    description: 'Show network interface information'
   }
 };
 
