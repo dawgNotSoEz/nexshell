@@ -187,8 +187,77 @@ const NEXUS_SUBCOMMANDS: Record<string, NexusSubcommand> = {
     name: 'env',
     handler: handleEnv,
     description: 'Show environment variables (optionally filtered)'
+  },
+  clear: {
+    name: 'clear',
+    handler: handleClear,
+    description: 'Clear terminal output'
+  },
+  version: {
+    name: 'version',
+    handler: handleVersion,
+    description: 'Show NexShell version information'
+  },
+  config: {
+    name: 'config',
+    handler: handleConfig,
+    description: 'Display NexShell configuration'
   }
 };
+
+/**
+ * nexus clear - Clear terminal (returns instruction)
+ */
+async function handleClear(args: string[], context: ExecutionContext): Promise<CommandExecutionResult> {
+  // In a real terminal, this would clear, but we return a message
+  return {
+    stdout: 'Terminal cleared (use Ctrl+L or refresh to clear UI)',
+    stderr: '',
+    exitCode: 0
+  };
+}
+
+/**
+ * nexus version - Show NexShell version
+ */
+async function handleVersion(args: string[], context: ExecutionContext): Promise<CommandExecutionResult> {
+  const info = [
+    'NexShell v0.1.0',
+    `Node.js: ${process.version}`,
+    `Platform: ${os.platform()} ${os.arch()}`,
+    `Electron: ${process.versions.electron ?? 'N/A'}`,
+    'Built by Savitender Singh'
+  ];
+
+  return {
+    stdout: info.join('\n'),
+    stderr: '',
+    exitCode: 0
+  };
+}
+
+/**
+ * nexus config - Show configuration
+ */
+async function handleConfig(args: string[], context: ExecutionContext): Promise<CommandExecutionResult> {
+  const config = [
+    '=== NexShell Configuration ===',
+    `Working Directory: ${context.workingDirectory}`,
+    `Permission Level: ${context.permissionLevel}`,
+    `Max File Read: 50 KB`,
+    `Max Fetch Size: 50 KB`,
+    `Max Pipeline Stages: 50`,
+    `Security: Enabled`,
+    `Path Traversal Protection: Enabled`,
+    `IPC Validation: Enabled`
+  ];
+
+  return {
+    stdout: config.join('\n'),
+    stderr: '',
+    exitCode: 0
+  };
+}
 
 /**
  * Main nexus command handler
