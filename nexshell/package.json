@@ -1,0 +1,32 @@
+{
+  "name": "nexshell",
+  "version": "0.1.0",
+  "description": "NexShell desktop shell prototype",
+  "main": "electron.main.ts",
+  "scripts": {
+    "dev": "concurrently -k \"npm:renderer\" \"npm:electron\"",
+    "renderer": "vite",
+    "electron": "cross-env NODE_ENV=development TS_NODE_PROJECT=tsconfig.electron.json electron ./electron.bootstrap.cjs",
+    "start": "cross-env NODE_ENV=production electron ./.tmp-electron/electron.main.js",
+    "build": "tsc --noEmit && tsc -p tsconfig.electron.json && vite build",
+    "package": "npm run build && node ./scripts/package-stub.cjs",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "electron": "^30.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.2",
+    "@types/react": "^18.3.7",
+    "@types/react-dom": "^18.3.2",
+    "@vitejs/plugin-react": "^4.3.2",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.15.7",
+    "typescript": "^5.6.3",
+    "vite": "^5.1.6"
+  }
+}

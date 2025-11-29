@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": "./.tmp-electron",
+    "types": ["node"],
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "electron.main.ts",
+    "preload.ts",
+    "src/main/**/*"
+  ]
+}

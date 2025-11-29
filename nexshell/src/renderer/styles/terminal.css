@@ -1,0 +1,58 @@
+/**
+ * Modern Terminal Styles
+ * Additional CSS for enhanced terminal UI
+ */
+
+/* Input wrapper focus state */
+.terminal-input-wrapper:focus-within {
+  border-color: rgba(57, 255, 20, 0.4) !important;
+  box-shadow: 
+    0 0 0 2px rgba(57, 255, 20, 0.1),
+    inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Smooth entry animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal-entry {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Glow effect for active input */
+.terminal-input-active {
+  box-shadow: 
+    0 0 20px rgba(57, 255, 20, 0.2),
+    inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Modern scrollbar for output pane */
+.terminal-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  background: rgba(57, 255, 20, 0.3);
+  border-radius: 3px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb:hover {
+  background: rgba(57, 255, 20, 0.5);
+}
+
+
+
